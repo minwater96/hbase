@@ -67,9 +67,10 @@ def create_chatroom(chatroom: Chatroom):
 def create_chat(chat: Chat):
     table = connection.table('chat')
     timestamp = datetime.now().timestamp()
-    MAX_TIMESTAMP = 2**64 - 1
+    MAX_TIMESTAMP = 2**31 - 1
+    reverse_ts = MAX_TIMESTAMP - timestamp
 
-    chat_id = f'{chat.room_id}_{int(MAX_TIMESTAMP - timestamp)}'
+    chat_id = f'{chat.room_id}_{reverse_ts}'
     table.put(
         chat_id.encode('utf-8'),  # chat_id를 바이트로 인코딩
         {
